@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road to Full Stack</title>
+    <link href="dist/output.css" rel="stylesheet">  
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js" defer></script>
+    <script src="src/scripts.js" defer></script>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans p-6">
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div id="app" class="container mx-auto">
+        <h1 class="text-4xl font-bold text-center text-green-600 mb-8">Road to Full Stack</h1>
+        
+        <div class="mb-4">
+            <label for="filter" class="text-gray-700">Filter:</label>
+            <select v-model="filter" class="ml-2 p-2 border rounded">
+                <option value="all">All</option>
+                <option value="completed">Completed</option>
+                <option value="incomplete">Incomplete</option>
+            </select>
+        </div>
+
+        <!-- Basic Concepts Checklist -->
+        <div class="mb-4">
+            <input type="text" v-model="newBasicConcepts" @keyup.enter="addItem('basicConcepts')" placeholder="Add new item..." class="p-2 border rounded w-3/4">
+            <button @click="addItem('basicConcepts')" class="p-2 bg-green-600 text-white rounded">Add</button>
+        </div>
+        <div class="relative mb-4">
+            <div class="bg-gray-300 rounded h-2">
+                <div id="basicConceptsProgress" class="bg-green-600 h-2 rounded" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">1. Basic Concepts</h2>
+            <ul>
+                <li v-for="(item, index) in filteredBasicConcepts" :key="item.name" :class="{ checked: item.checked }" class="flex items-center py-2 px-4 rounded-md transition-all duration-300 ease-in-out transform hover:bg-gray-200 hover:scale-105">
+                    <label class="flex items-center cursor-pointer w-full hover:text-green-600">
+                        <input type="checkbox" v-model="item.checked" @change="saveChecklist" class="mr-2 w-5 h-5 text-green-500 rounded border-gray-300 focus:ring-green-500">
+                        <!-- Conditional rendering for span or input field based on 'isEditing' -->
+                        <span v-if="!item.isEditing" :class="{ 'line-through': item.checked }">{{ item.name }}</span>
+                        <input 
+                            v-if="item.isEditing" 
+                            @keyup.esc="cancelEdit(editingCategory, editIndex)"
+                            v-model="editedItem" 
+                            :ref="'editInput_basicConcepts_' + index" 
+                            class="p-2 border rounded w-full" 
+                            @keyup.enter="saveEdit('basicConcepts', index)"
+                        >
+                    </label>
+                    <div class="ml-auto flex">
+                        <!-- Edit Button -->
+                        <button @click="toggleEdit('basicConcepts', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                            {{ item.isEditing ? 'Save' : 'Edit' }}
+                        </button>
+                        <!-- Delete Button -->
+                        <button @click="deleteItem('basicConcepts', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Frontend Development Checklist -->
+        <div class="mb-4">
+            <input type="text" v-model="newFrontendDevelopment" @keyup.enter="addItem('frontendDevelopment')" placeholder="Add new item..." class="p-2 border rounded w-3/4">
+            <button @click="addItem('frontendDevelopment')" class="p-2 bg-green-600 text-white rounded">Add</button>
+        </div>
+        <div class="relative mb-4">
+            <div class="bg-gray-300 rounded h-2">
+                <div id="frontendDevelopmentProgress" class="bg-green-600 h-2 rounded" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">2. Frontend Development</h2>
+            <ul>
+                <li v-for="(item, index) in filteredFrontendDevelopment" :key="item.name" :class="{ checked: item.checked }" class="flex items-center py-2 px-4 rounded-md transition-all duration-300 ease-in-out transform hover:bg-gray-200 hover:scale-105">
+                    <label class="flex items-center cursor-pointer w-full hover:text-green-600">
+                        <input type="checkbox" v-model="item.checked" @change="saveChecklist" class="mr-2 w-5 h-5 text-green-500 rounded border-gray-300 focus:ring-green-500">
+                        <span v-if="!item.isEditing" :class="{ 'line-through': item.checked }">{{ item.name }}</span>
+                        <input 
+                            v-if="item.isEditing" 
+                            @keyup.esc="cancelEdit(editingCategory, editIndex)"
+                            v-model="editedItem" 
+                            :ref="'editInput_frontendDevelopment_' + index" 
+                            class="p-2 border rounded w-full" 
+                            @keyup.enter="saveEdit('frontendDevelopment', index)"
+                        >
+                    </label>
+                    <div class="ml-auto flex">
+                        <button @click="toggleEdit('frontendDevelopment', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                            {{ item.isEditing ? 'Save' : 'Edit' }}
+                        </button>
+                        <button @click="deleteItem('frontendDevelopment', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Backend Development Checklist -->
+        <div class="mb-4">
+            <input type="text" v-model="newBackendDevelopment" @keyup.enter="addItem('backendDevelopment')" placeholder="Add new item..." class="p-2 border rounded w-3/4">
+            <button @click="addItem('backendDevelopment')" class="p-2 bg-green-600 text-white rounded">Add</button>
+        </div>
+        <div class="relative mb-4">
+            <div class="bg-gray-300 rounded h-2">
+                <div id="backendDevelopmentProgress" class="bg-green-600 h-2 rounded" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">3. Backend Development</h2>
+            <ul>
+                <li v-for="(item, index) in filteredBackendDevelopment" :key="index" :class="{ checked: item.checked }" class="flex items-center py-2 px-4 rounded-md transition-all duration-300 ease-in-out transform hover:bg-gray-200 hover:scale-105">
+                    <label class="flex items-center cursor-pointer w-full hover:text-green-600">
+                        <input type="checkbox" v-model="item.checked" @change="saveChecklist" class="mr-2 w-5 h-5 text-green-500 rounded border-gray-300 focus:ring-green-500">
+                        <span v-if="!item.isEditing" :class="{ 'line-through': item.checked }">{{ item.name }}</span>
+                        <input 
+                            v-if="item.isEditing" 
+                            @keyup.esc="cancelEdit(editingCategory, editIndex)"
+                            v-model="editedItem" 
+                            :ref="'editInput_backendDevelopment_' + index" 
+                            class="p-2 border rounded w-full" 
+                            @keyup.enter="saveEdit('backendDevelopment', index)"
+                        >
+                    </label>
+                    <div class="ml-auto flex">
+                        <button @click="toggleEdit('backendDevelopment', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                            {{ item.isEditing ? 'Save' : 'Edit' }}
+                        </button>
+                        <button @click="deleteItem('backendDevelopment', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- DevOps & Deployment Checklist -->
+        <div class="mb-4">
+            <input type="text" v-model="newDevopsDeployment" @keyup.enter="addItem('devopsDeployment')" placeholder="Add new item..." class="p-2 border rounded w-3/4">
+            <button @click="addItem('devopsDeployment')" class="p-2 bg-green-600 text-white rounded">Add</button>
+        </div>
+        <div class="relative mb-4">
+            <div class="bg-gray-300 rounded h-2">
+                <div id="devopsDeploymentProgress" class="bg-green-600 h-2 rounded" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">4. DevOps & Deployment</h2>
+            <ul>
+                <li v-for="(item, index) in filteredDevopsDeployment" :key="item.name" :class="{ checked: item.checked }" class="flex items-center py-2 px-4 rounded-md transition-all duration-300 ease-in-out transform hover:bg-gray-200 hover:scale-105">
+                    <label class="flex items-center cursor-pointer w-full hover:text-green-600">
+                        <input type="checkbox" v-model="item.checked" @change="saveChecklist" class="mr-2 w-5 h-5 text-green-500 rounded border-gray-300 focus:ring-green-500">
+                        <span v-if="!item.isEditing" :class="{ 'line-through': item.checked }">{{ item.name }}</span>
+                        <input 
+                            v-if="item.isEditing" 
+                            @keyup.esc="cancelEdit(editingCategory, editIndex)"
+                            v-model="editedItem" 
+                            :ref="'editInput_devopsDeployment_' + index" 
+                            class="p-2 border rounded w-full" 
+                            @keyup.enter="saveEdit('devopsDeployment', index)"
+                        >
+                    </label>
+                    <div class="ml-auto flex">
+                        <button @click="toggleEdit('devopsDeployment', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                            {{ item.isEditing ? 'Save' : 'Edit' }}
+                        </button>
+                        <button @click="deleteItem('devopsDeployment', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Testing Checklist -->
+        <div class="mb-4">
+            <input type="text" v-model="newTesting" @keyup.enter="addItem('testing')" placeholder="Add new item..." class="p-2 border rounded w-3/4">
+            <button @click="addItem('testing')" class="p-2 bg-green-600 text-white rounded">Add</button>
+        </div>
+        <div class="relative mb-4">
+            <div class="bg-gray-300 rounded h-2">
+                <div id="testingProgress" class="bg-green-600 h-2 rounded" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">5. Testing</h2>
+            <ul>
+                <li v-for="(item, index) in filteredTesting" :key="item.name" :class="{ checked: item.checked }" class="flex items-center py-2 px-4 rounded-md transition-all duration-300 ease-in-out transform hover:bg-gray-200 hover:scale-105">
+                    <label class="flex items-center cursor-pointer w-full hover:text-green-600">
+                        <input type="checkbox" v-model="item.checked" @change="saveChecklist" class="mr-2 w-5 h-5 text-green-500 rounded border-gray-300 focus:ring-green-500">
+                        <span v-if="!item.isEditing" :class="{ 'line-through': item.checked }">{{ item.name }}</span>
+                        <input 
+                            v-if="item.isEditing" 
+                            @keyup.esc="cancelEdit(editingCategory, editIndex)"
+                            v-model="editedItem" 
+                            :ref="'editInput_testing_' + index" 
+                            class="p-2 border rounded w-full" 
+                            @keyup.enter="saveEdit('testing', index)"
+                        >
+                    </label>
+                    <div class="ml-auto flex">
+                        <button @click="toggleEdit('testing', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                            {{ item.isEditing ? 'Save' : 'Edit' }}
+                        </button>
+                        <button @click="deleteItem('testing', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Advanced Concepts Checklist -->
+        <div class="mb-4">
+            <input type="text" v-model="newAdvancedConcepts" @keyup.enter="addItem('advancedConcepts')" placeholder="Add new item..." class="p-2 border rounded w-3/4">
+            <button @click="addItem('advancedConcepts')" class="p-2 bg-green-600 text-white rounded">Add</button>
+        </div>
+        <div class="relative mb-4">
+            <div class="bg-gray-300 rounded h-2">
+                <div id="advancedConceptsProgress" class="bg-green-600 h-2 rounded" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">6. Advanced Concepts</h2>
+            <ul>
+                <li v-for="(item, index) in filteredAdvancedConcepts" :key="item.name" :class="{ checked: item.checked }" class="flex items-center py-2 px-4 rounded-md transition-all duration-300 ease-in-out transform hover:bg-gray-200 hover:scale-105">
+                    <label class="flex items-center cursor-pointer w-full hover:text-green-600">
+                        <input type="checkbox" v-model="item.checked" @change="saveChecklist" class="mr-2 w-5 h-5 text-green-500 rounded border-gray-300 focus:ring-green-500">
+                        <span v-if="!item.isEditing" :class="{ 'line-through': item.checked }">{{ item.name }}</span>
+                        <input 
+                            v-if="item.isEditing" 
+                            @keyup.esc="cancelEdit(editingCategory, editIndex)"
+                            v-model="editedItem" 
+                            :ref="'editInput_advancedConcepts_' + index" 
+                            class="p-2 border rounded w-full" 
+                            @keyup.enter="saveEdit('advancedConcepts', index)"
+                        >
+                    </label>
+                    <div class="ml-auto flex">
+                        <button @click="toggleEdit('advancedConcepts', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                            {{ item.isEditing ? 'Save' : 'Edit' }}
+                        </button>
+                        <button @click="deleteItem('advancedConcepts', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Building Projects Checklist -->
+        <div class="mb-4">
+            <input type="text" v-model="newBuildingProjects" @keyup.enter="addItem('buildingProjects')" placeholder="Add new item..." class="p-2 border rounded w-3/4">
+            <button @click="addItem('buildingProjects')" class="p-2 bg-green-600 text-white rounded">Add</button>
+        </div>
+        <div class="relative mb-4">
+            <div class="bg-gray-300 rounded h-2">
+                <div id="buildingProjectsProgress" class="bg-green-600 h-2 rounded" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">7. Building Projects</h2>
+            <ul>
+                <li v-for="(item, index) in filteredBuildingProjects" :key="item.name" :class="{ checked: item.checked }" class="flex items-center py-2 px-4 rounded-md transition-all duration-300 ease-in-out transform hover:bg-gray-200 hover:scale-105">
+                    <label class="flex items-center cursor-pointer w-full hover:text-green-600">
+                        <input type="checkbox" v-model="item.checked" @change="saveChecklist" class="mr-2 w-5 h-5 text-green-500 rounded border-gray-300 focus:ring-green-500">
+                        <span v-if="!item.isEditing" :class="{ 'line-through': item.checked }">{{ item.name }}</span>
+                        <input 
+                            v-if="item.isEditing" 
+                            @keyup.esc="cancelEdit(editingCategory, editIndex)"
+                            v-model="editedItem" 
+                            :ref="'editInput_buildingProjects_' + index" 
+                            class="p-2 border rounded w-full" 
+                            @keyup.enter="saveEdit('buildingProjects', index)"
+                        >
+                    </label>
+                    <div class="ml-auto flex">
+                        <button @click="toggleEdit('buildingProjects', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                            {{ item.isEditing ? 'Save' : 'Edit' }}
+                        </button>
+                        <button @click="deleteItem('buildingProjects', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Continuous Learning Checklist -->
+        <div class="mb-4">
+            <input type="text" v-model="newContinuousLearning" @keyup.enter="addItem('continuousLearning')" placeholder="Add new item..." class="p-2 border rounded w-3/4">
+            <button @click="addItem('continuousLearning')" class="p-2 bg-green-600 text-white rounded">Add</button>
+        </div>
+        <div class="relative mb-4">
+            <div class="bg-gray-300 rounded h-2">
+                <div id="continuousLearningProgress" class="bg-green-600 h-2 rounded" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">8. Continuous Learning</h2>
+            <ul>
+                <li v-for="(item, index) in filteredContinuousLearning" :key="item.name" :class="{ checked: item.checked }" class="flex items-center py-2 px-4 rounded-md transition-all duration-300 ease-in-out transform hover:bg-gray-200 hover:scale-105">
+                    <label class="flex items-center cursor-pointer w-full hover:text-green-600">
+                        <input type="checkbox" v-model="item.checked" @change="saveChecklist" class="mr-2 w-5 h-5 text-green-500 rounded border-gray-300 focus:ring-green-500">
+                        <span v-if="!item.isEditing" :class="{ 'line-through': item.checked }">{{ item.name }}</span>
+                        <input 
+                            v-if="item.isEditing" 
+                            @keyup.esc="cancelEdit(editingCategory, editIndex)"
+                            v-model="editedItem" 
+                            :ref="'editInput_continuousLearning_' + index" 
+                            class="p-2 border rounded w-full" 
+                            @keyup.enter="saveEdit('continuousLearning', index)"
+                        >
+                    </label>
+                    <div class="ml-auto flex">
+                        <button @click="toggleEdit('continuousLearning', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                            {{ item.isEditing ? 'Save' : 'Edit' }}
+                        </button>
+                        <button @click="deleteItem('continuousLearning', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>
