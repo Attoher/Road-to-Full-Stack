@@ -1,6 +1,5 @@
 # Project Title
-
-![Project Logo](link_to_logo_image)  
+ 
 ![image](https://github.com/user-attachments/assets/41faeb19-50c9-4548-b556-68ba3bd190c8)
 
 
