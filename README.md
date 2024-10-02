@@ -3,11 +3,11 @@
 ![image](https://github.com/user-attachments/assets/41faeb19-50c9-4548-b556-68ba3bd190c8)
 
 
-## Deskripsi
+## Description
 
 This project provides an interactive checklist to guide aspiring developers through the roadmap of becoming a full-stack developer. The checklist includes essential skills, tools, and concepts, from front-end to back-end development, ensuring that learners can track their progress as they master various technologies. The goal of this project is to offer a clear, structured, and user-friendly interface for developers to follow their learning journey towards full-stack proficiency.
 
-## Fitur
+## Features
 
 - Interactive checklist with multiple categories (front-end, back-end, databases, etc.).
 - Progress tracking for each development stage.
@@ -15,7 +15,7 @@ This project provides an interactive checklist to guide aspiring developers thro
 - Responsive design, ensuring accessibility on all devices.
 - Built using Vue.js for dynamic user interaction and Tailwind CSS for modern, responsive styling.
 
-## Prasyarat
+## Prerequisite
 
 Berikut adalah software atau package yang perlu diinstal sebelum menjalankan proyek:
 
@@ -23,7 +23,7 @@ Berikut adalah software atau package yang perlu diinstal sebelum menjalankan pro
 - **Node.js installed (for running the project).
 - **Basic understanding of web development (HTML, CSS, JavaScript).
 
-## Instalasi
+## Instalation
 
 Langkah-langkah untuk menginstal dan menjalankan proyek ini di lingkungan lokal:
 
@@ -41,7 +41,7 @@ npm install
 npm start
 ```
 
-## Struktur Proyek
+## Structure Project
 
 Berikan gambaran singkat tentang struktur direktori proyek jika diperlukan.
 
