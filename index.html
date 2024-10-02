@@ -8,6 +8,18 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js" defer></script>
     <script src="src/scripts.js" defer></script>
     <link rel="stylesheet" href="src/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              clifford: '#da373d',
+            }
+          }
+        }
+      }
+    </script>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans p-6">
     <div id="loadingScreen" class="loading-screen">
@@ -55,11 +67,11 @@
                     </label>
                     <div class="ml-auto flex">
                         <!-- Edit Button -->
-                        <button @click="toggleEdit('basicConcepts', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                        <button @click="toggleEdit('basicConcepts', index)" class="px-2 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
                             {{ item.isEditing ? 'Save' : 'Edit' }}
                         </button>
                         <!-- Delete Button -->
-                        <button @click="deleteItem('basicConcepts', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                        <button @click="deleteItem('basicConcepts', index)" class="px-2 py-2 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
                     </div>
                 </li>
             </ul>
@@ -92,10 +104,10 @@
                         >
                     </label>
                     <div class="ml-auto flex">
-                        <button @click="toggleEdit('frontendDevelopment', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                        <button @click="toggleEdit('frontendDevelopment', index)" class="px-2 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
                             {{ item.isEditing ? 'Save' : 'Edit' }}
                         </button>
-                        <button @click="deleteItem('frontendDevelopment', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                        <button @click="deleteItem('frontendDevelopment', index)" class="px-2 py-2 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
                     </div>
                 </li>
             </ul>
@@ -128,10 +140,10 @@
                         >
                     </label>
                     <div class="ml-auto flex">
-                        <button @click="toggleEdit('backendDevelopment', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                        <button @click="toggleEdit('backendDevelopment', index)" class="px-2 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
                             {{ item.isEditing ? 'Save' : 'Edit' }}
                         </button>
-                        <button @click="deleteItem('backendDevelopment', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                        <button @click="deleteItem('backendDevelopment', index)" class="px-2 py-2 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
                     </div>
                 </li>
             </ul>
@@ -164,10 +176,10 @@
                         >
                     </label>
                     <div class="ml-auto flex">
-                        <button @click="toggleEdit('devopsDeployment', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                        <button @click="toggleEdit('devopsDeployment', index)" class="px-2 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
                             {{ item.isEditing ? 'Save' : 'Edit' }}
                         </button>
-                        <button @click="deleteItem('devopsDeployment', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                        <button @click="deleteItem('devopsDeployment', index)" class="px-2 py-2 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
                     </div>
                 </li>
             </ul>
@@ -200,10 +212,10 @@
                         >
                     </label>
                     <div class="ml-auto flex">
-                        <button @click="toggleEdit('testing', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                        <button @click="toggleEdit('testing', index)" class="px-2 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
                             {{ item.isEditing ? 'Save' : 'Edit' }}
                         </button>
-                        <button @click="deleteItem('testing', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                        <button @click="deleteItem('testing', index)" class="px-2 py-2 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
                     </div>
                 </li>
             </ul>
@@ -236,10 +248,10 @@
                         >
                     </label>
                     <div class="ml-auto flex">
-                        <button @click="toggleEdit('advancedConcepts', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                        <button @click="toggleEdit('advancedConcepts', index)" class="px-2 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
                             {{ item.isEditing ? 'Save' : 'Edit' }}
                         </button>
-                        <button @click="deleteItem('advancedConcepts', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                        <button @click="deleteItem('advancedConcepts', index)" class="px-2 py-2 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
                     </div>
                 </li>
             </ul>
@@ -272,10 +284,10 @@
                         >
                     </label>
                     <div class="ml-auto flex">
-                        <button @click="toggleEdit('buildingProjects', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                        <button @click="toggleEdit('buildingProjects', index)" class="px-2 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
                             {{ item.isEditing ? 'Save' : 'Edit' }}
                         </button>
-                        <button @click="deleteItem('buildingProjects', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                        <button @click="deleteItem('buildingProjects', index)" class="px-2 py-2 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
                     </div>
                 </li>
             </ul>
@@ -308,10 +320,10 @@
                         >
                     </label>
                     <div class="ml-auto flex">
-                        <button @click="toggleEdit('continuousLearning', index)" class="px-4 py-1 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
+                        <button @click="toggleEdit('continuousLearning', index)" class="px-2 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded mr-2">
                             {{ item.isEditing ? 'Save' : 'Edit' }}
                         </button>
-                        <button @click="deleteItem('continuousLearning', index)" class="px-4 py-1 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
+                        <button @click="deleteItem('continuousLearning', index)" class="px-2 py-2 text-white bg-red-500 hover:bg-red-700 rounded">Delete</button>
                     </div>
                 </li>
             </ul>
