@@ -1,6 +1,6 @@
 # RoadtoFullStackWebsite
  
-![image](https://github.com/user-attachments/assets/41faeb19-50c9-4548-b556-68ba3bd190c8)
+![image](https://github.com/user-attachments/assets/5f8f27dc-52fd-458a-aba5-d67e95d41811)
 
 
 ## Description
@@ -59,5 +59,4 @@ RoadtoFullStack/
 │   └── styles.css      # Main folder for source code
 │
 ├── tailwind.config.js  # Configuration file for Tailwind CSS
-└── temp.html           # Temporary HTML file, possibly for testing purposes
 ```
